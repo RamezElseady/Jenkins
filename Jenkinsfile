@@ -4,7 +4,7 @@ pipeline {
     environment {
         // اسم مستخدم دوكر هاب والـ Repository
         DOCKER_HUB_CRED = 'docker-hub-credentials'
-        IMAGE_NAME = 'ramez14/my-node-app'
+        IMAGE_NAME = 'raramez14/jenkins-repo/my-node-app'
     }
 
     stages {
