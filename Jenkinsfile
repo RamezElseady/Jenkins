@@ -21,7 +21,7 @@ pipeline {
                 script {
                     sh "docker build -t ${IMAGE_NAME}:${env.BUILD_NUMBER} -t ${IMAGE_NAME}:latest ."
                 }
-            }
+            } 
         }
 
         stage('3. Push to Docker Hub') {
