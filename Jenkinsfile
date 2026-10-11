@@ -10,14 +10,14 @@ pipeline {
     stages {
         stage('1. Checkout Code') {
             steps {
-                echo 'سحب الكود من GitHub...'
+                echo ' pulling code from GitHub... ⏳ ✔️ '
                 checkout scm
             }
         }
 
         stage('2. Build Docker Image') {
             steps {
-                echo 'جاري بناء صورة دوكر (Docker Image)...'
+                echo '   Building (Docker Image)... 🐳'
                 script {
                     sh "docker build -t ${IMAGE_NAME}:${env.BUILD_NUMBER} -t ${IMAGE_NAME}:latest ."
                 }
@@ -26,7 +26,7 @@ pipeline {
 
         stage('3. Push to Docker Hub') {
             steps {
-                echo 'تسجيل الدخول ورفع الصورة إلى Docker Hub...'
+                echo '    pushing the image to  Docker Hub... 🐳'
                 script {
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_HUB_CRED}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         sh "echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin"
@@ -39,13 +39,10 @@ pipeline {
 
         stage('4. Deploy Application') {
             steps {
-                echo 'بدء نشر التطبيق على السيرفر...'
+                echo '   Deploying Application on Server ...🚀'
                 script {
-                    // إيقاف وحذف الكونتينر القديم إن وجد لعدم تعارض البورتات
                     sh "docker stop ${CONTAINER_NAME} || true"
                     sh "docker rm ${CONTAINER_NAME} || true"
-                    
-                    // سحب أحدث صورة وتشغيلها وربطها بالبورت الخارجي 5000
                     sh "docker pull ${IMAGE_NAME}:latest"
                     sh "docker run -d --name ${CONTAINER_NAME} -p 5000:5000 ${IMAGE_NAME}:latest"
                 }
@@ -55,10 +52,10 @@ pipeline {
     
     post {
         success {
-            echo 'تم بناء التطبيق ورفعها ونشره بنجاح تام! 🚀'
+            echo 'The application has been built, uploaded, and deployed successfully ✅'
         }
         failure {
-            echo 'فشلت إحدى مراحل البناء أو النشر.'
+            echo 'One of the build or deployment stages failed ❌'
         }
     }
 }
