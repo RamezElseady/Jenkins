@@ -54,7 +54,7 @@ const server = http.createServer((req, res) => {
     </head>
     <body>
       <div class="card">
-        <h1>🚀 تم بناء ونشر التطبيق أوتوماتيكياً بنجاح!</h1>
+        <h1>🚀 The application was successfully built and deployed</h1>
         <p>Jenkins + Docker + GitHub Webhook Pipeline is Live ⚡</p>
       </div>
     </body>
